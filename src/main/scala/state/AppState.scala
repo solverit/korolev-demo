@@ -10,9 +10,9 @@ import korolev.state.javaSerialization._
 import scala.concurrent.Future
 
 /**
-  *
-  * @author Solverit
-  */
+ *
+ * @author Solverit
+ */
 sealed trait UiState {
   def deviceId: DeviceId
 }
@@ -25,43 +25,50 @@ trait AuthorizedState extends UiState {
   def userProfile: UserProfileData
 }
 
-trait NotAuthorizedState extends UiState {
-
-}
+trait NotAuthorizedState extends UiState {}
 
 case class AnonymousState(deviceId: DeviceId) extends NotAuthorizedState
 
 case class UserState(
   deviceId: DeviceId,
   leftPanel: LeftPanelState,
-  rightPanel: RightPanelState
+  rightPanel: RightPanelState,
+  todo: ToDoState
 ) extends AuthorizedState {
   override def userProfile: UserProfileData = UserProfileData("1", "Root")
 }
+
+case class Todo(text: String, done: Boolean)
+
+case class ToDoState(
+  list: Vector[Todo] = (0 to 3).toVector.map(i => Todo(s"This is TODO #$i", done = false)),
+  edit: Option[Int] = None
+)
 
 case class UserProfileData(id: String, name: String)
 
 case class LeftPanelState(clazz: String, title: String, tabs: TabState) extends PanelState
 case class RightPanelState(clazz: String, title: String, tabs: TabState) extends PanelState
 
-case class Tab(title: String, content: String) extends TabPane
+case class TabPaneState(title: String, content: String) extends TabPane
+case class TabPaneStateTodo(title: String, content: String) extends TabPane
 
 
 // Demo data
 object ContentPanelState {
   val lpTabsSeq = Seq(
-    Tab("Tab1", "We are the Tab1"),
-    Tab("Tab2", "We are the Tab2")
+    TabPaneState("Tab1", "We are the Tab1"),
+    TabPaneStateTodo("Tab2", "We are the Tab2")
   )
-  val lpTabs = TabState("", lpTabsSeq.head, lpTabsSeq)
+  val lpTabs    = TabState("", lpTabsSeq.head, lpTabsSeq)
   val leftPanel = LeftPanelState("column is-3", "Left Title", lpTabs)
 
   val rpTabsSeq = Seq(
-    Tab("Tab3", "We are the Tab3"),
-    Tab("Tab4", "We are the Tab4"),
-    Tab("Tab5", "We are the Tab5"),
-    Tab("Tab6", "We are the Tab6")
+    TabPaneState("Tab3", "We are the Tab3"),
+    TabPaneState("Tab4", "We are the Tab4"),
+    TabPaneState("Tab5", "We are the Tab5"),
+    TabPaneState("Tab6", "We are the Tab6")
   )
-  val rpTabs = TabState("", rpTabsSeq.head, rpTabsSeq)
+  val rpTabs     = TabState("", rpTabsSeq.head, rpTabsSeq)
   val rightPanel = RightPanelState("column is-9", "Right Title", rpTabs)
 }

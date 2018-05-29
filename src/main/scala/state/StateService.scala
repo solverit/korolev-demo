@@ -17,7 +17,8 @@ object StateService {
     val initialState = UserState(
       deviceId,
       ContentPanelState.leftPanel,
-      ContentPanelState.rightPanel
+      ContentPanelState.rightPanel,
+      ToDoState()
     )
     sessions.update(deviceId, initialState)
     initialState
