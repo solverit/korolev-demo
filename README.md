@@ -4,7 +4,7 @@ Korolev based demo application for my speak at Conf 2018
 
 Korolev application + Rest API
 
-1. TODO add link to slideshare
+1. [Slides](https://docs.google.com/presentation/d/1C2UH8xK1rHA8fZ0mFp7f8mrf6JJSbIxfiK9kyLVORZg)
 2. TODO add link to video
 
 # How to run
